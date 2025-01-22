@@ -1,0 +1,5 @@
+/storage/node_modules
+/storage/.env
+
+/sdk/node_modules
+/sdk/.env
