@@ -15,6 +15,10 @@ app.use(express.urlencoded({ extended: true }));
 
 const basePath = process.env.PROJECT_MODE === 'production' ? '/tmp' : __dirname;
 
+app.get('/', (_req: Request, res: Response) => {
+  res.send('Welcome to the storage service');
+});
+
 app.post('/put', asyncHandler(async (req: Request, res: Response) => {
   const { key , content } = req.body;
   try {
