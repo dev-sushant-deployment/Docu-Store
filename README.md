@@ -1,39 +1,53 @@
 # Docu-Store
 
-A simple document storage service built with Node.js and Express.
+A simple document storage service built with Node.js, Express, and TypeScript.  It allows you to store, retrieve, and delete text content using unique keys.  The service uses the local file system for storage in development and `/tmp` in production.
+
+## Features
+
+* **PUT:** Stores content associated with a given key.  Supports nested key paths (e.g., `myfolder/mysubfolder/mydocument`).
+* **GET:** Retrieves content by key.
+* **DELETE:** Deletes content and its associated key.
+* **Error Handling:** Provides informative error messages and appropriate status codes.
+* **Asynchronous Operations:** Uses async/await for efficient handling of file system operations.
+* **TypeScript:** Written in TypeScript for improved code maintainability and type safety.
 
 ## Getting Started
 
-This project uses environment variables.  Create a `.env` file in the root directory and add the following:
+This service is designed to be run as a standalone server.  You will need Node.js and npm installed.
 
-```
-PORT=3000
-PROJECT_MODE=development
-```
+1. Clone the repository: `git clone <repository-url>`
+2. Install dependencies: `npm install`
+3. Set environment variables (see below).
+4. Start the server: `npm start`
 
-Install dependencies:
+## Environment Variables
 
-```bash
-npm install
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-## Project Structure
-
-- `index.ts`: The main entry point for the application.
-- `types.d.ts`: TypeScript type definitions for environment variables.
+* `PORT`: The port the server will listen on (defaults to 3000).
+* `PROJECT_MODE`: Set to 'production' to use `/tmp` as the storage directory. Defaults to development mode which uses the project's directory.
 
 
-## Future Enhancements
+## Usage
 
-This is a basic implementation. Future enhancements could include:
+The Docu-Store service exposes the following endpoints:
 
-- Actual document storage functionality (e.g., using a database or cloud storage).
-- API endpoints for uploading, downloading, and managing documents.
-- User authentication and authorization.
-- More robust error handling and logging.
+* **PUT:** `POST /put` - Requires `key` and `content` in the request body.
+* **GET:** `POST /get` - Requires `key` in the request body.
+* **DELETE:** `POST /delete` - Requires `key` in the request body.
+
+A client library (`DocuStore.ts`) is included to simplify interaction with these endpoints.  See `DocuStore.ts` for usage examples.
+
+
+## Structure
+
+* `index.ts`: Main server file.
+* `DocuStore.ts`: Client library for interacting with the storage service.
+* `utils/ApiResponse.ts`: Utility class for standardized API responses.
+* `utils/ApiError.ts`: Utility class for standardized API errors.
+* `utils/AsyncHandler.ts`: Express middleware for handling asynchronous route handlers.
+
+
+
+## Contributing
+
+
+Contributions are welcome! Please feel free to submit issues and pull requests.
