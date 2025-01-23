@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.2.1",
+    "@vercel/node": "^5.0.2",
     "dotenv": "^16.4.7",
     "express": "^4.21.2"
   },

@@ -4,6 +4,7 @@ import { join } from 'path';
 import { mkdir, readFile, rm, writeFile } from 'fs/promises';
 import { asyncHandler } from './utils/AsyncHandler';
 import { ApiResponse } from './utils/ApiResponse';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 
 dotenv.config();
 
@@ -64,3 +65,7 @@ app.post('/delete', async (req: Request, res: Response) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+export default (req: VercelRequest, res: VercelResponse) => {
+  app(req, res);
+};
