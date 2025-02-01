@@ -57,6 +57,23 @@ app.post('/get', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(statusCode).json(new ApiResponse_1.ApiResponse(statusCode, null, errorMessage));
     }
 }));
+app.post('/list', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { key } = req.body;
+    const filePath = (0, path_1.join)(basePath, 'store', key);
+    try {
+        const files = yield (0, promises_1.readdir)(filePath);
+        res.status(200).json(new ApiResponse_1.ApiResponse(200, { files }, 'Data retrieved successfully'));
+    }
+    catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const statusCode = (error instanceof Error && 'code' in error && error.code === 'ENOENT') ? 404 : 500;
+        if (error instanceof Error && 'code' in error && error.code === 'ENOTDIR') {
+            res.status(200).json(new ApiResponse_1.ApiResponse(200, { files: [] }, 'Key is not a directory'));
+        }
+        else
+            res.status(statusCode).json(new ApiResponse_1.ApiResponse(statusCode, null, errorMessage));
+    }
+}));
 app.post('/delete', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { key } = req.body;
     const filePath = (0, path_1.join)(basePath, 'store', key);

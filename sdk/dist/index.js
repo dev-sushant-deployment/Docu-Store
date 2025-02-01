@@ -23,6 +23,10 @@ class DocuStore {
             const { data: { data: { content } } } = yield axios_1.default.post(`${DocuStore.STORAGE_FACILITY_URL}/get`, { key });
             return content;
         });
+        this.list = (key) => __awaiter(this, void 0, void 0, function* () {
+            const { data: { data: { files } } } = yield axios_1.default.post(`${DocuStore.STORAGE_FACILITY_URL}/list`, { key });
+            return files;
+        });
         this.delete = (key) => __awaiter(this, void 0, void 0, function* () {
             yield axios_1.default.post(`${DocuStore.STORAGE_FACILITY_URL}/delete`, { key });
         });
