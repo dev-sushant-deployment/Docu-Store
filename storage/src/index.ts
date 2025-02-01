@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { join } from 'path';
-import { mkdir, readFile, rm, writeFile } from 'fs/promises';
+import { mkdir, readdir, readFile, rm, writeFile } from 'fs/promises';
 import { asyncHandler } from './utils/AsyncHandler';
 import { ApiResponse } from './utils/ApiResponse';
 import { VercelRequest, VercelResponse } from '@vercel/node';
@@ -46,6 +46,21 @@ app.post('/get', async (req: Request, res: Response) => {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     const statusCode = (error instanceof Error && 'code' in error && error.code === 'ENOENT') ? 404 : 500;
     res.status(statusCode).json(new ApiResponse(statusCode, null, errorMessage));
+  }
+});
+
+app.post('/list', async (req: Request, res: Response) => {
+  const { key } = req.body;
+  const filePath = join(basePath, 'store', key);
+  try {
+    const files = await readdir(filePath);
+    res.status(200).json(new ApiResponse(200, { files }, 'Data retrieved successfully'));
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const statusCode = (error instanceof Error && 'code' in error && error.code === 'ENOENT') ? 404 : 500;
+    if (error instanceof Error && 'code' in error && error.code === 'ENOTDIR') {
+      res.status(200).json(new ApiResponse(200, { files : [] }, 'Key is not a directory'));
+    } else res.status(statusCode).json(new ApiResponse(statusCode, null, errorMessage));
   }
 });
 
